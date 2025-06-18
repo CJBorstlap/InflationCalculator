@@ -1,4 +1,4 @@
-name: Build Inflation Calculator
+name: "Build Inflation Calculator"
 
 on:
   push:
@@ -29,7 +29,7 @@ jobs:
         run: pyinstaller --onefile --windowed --icon=inflation_icon.ico inflation_gui_calculator.py
 
       - name: Upload Windows artifact
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: InflationCalculator-Windows
           path: dist/inflation_gui_calculator.exe
@@ -54,7 +54,7 @@ jobs:
         run: pyinstaller --onefile --windowed --icon=inflation_icon.icns inflation_gui_calculator.py
 
       - name: Upload macOS artifact
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: InflationCalculator-macOS
           path: dist/inflation_gui_calculator.app
