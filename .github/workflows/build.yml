@@ -2,25 +2,34 @@ name: Build Inflation Calculator
 
 on:
   push:
-    branches: [ main ]
+    branches:
+      - main
   release:
-    types: [ created ]
+    types:
+      - created
 
 jobs:
   build-windows:
     runs-on: windows-latest
     steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-python@v4
-        with: python-version: '3.x'
-      - run: |
-          pip install --upgrade pip
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.x'
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
           pip install pyinstaller
-      - run: |
-          pyinstaller --onefile --windowed \
-            --icon=inflation_icon.ico \
-            inflation_gui_calculator.py
-      - uses: actions/upload-artifact@v3
+
+      - name: Build Windows executable
+        run: pyinstaller --onefile --windowed --icon=inflation_icon.ico inflation_gui_calculator.py
+
+      - name: Upload Windows artifact
+        uses: actions/upload-artifact@v3
         with:
           name: InflationCalculator-Windows
           path: dist/inflation_gui_calculator.exe
@@ -28,17 +37,24 @@ jobs:
   build-macos:
     runs-on: macos-latest
     steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-python@v4
-        with: python-version: '3.x'
-      - run: |
-          pip3 install --upgrade pip
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.x'
+
+      - name: Install dependencies
+        run: |
+          python3 -m pip install --upgrade pip
           pip3 install pyinstaller
-      - run: |
-          pyinstaller --onefile --windowed \
-            --icon=inflation_icon.icns \
-            inflation_gui_calculator.py
-      - uses: actions/upload-artifact@v3
+
+      - name: Build macOS app
+        run: pyinstaller --onefile --windowed --icon=inflation_icon.icns inflation_gui_calculator.py
+
+      - name: Upload macOS artifact
+        uses: actions/upload-artifact@v3
         with:
           name: InflationCalculator-macOS
           path: dist/inflation_gui_calculator.app
